@@ -41,8 +41,11 @@
         
         // TODO: initialize user
         NSDictionary *user = dictionary[@"user"];
+        
         self.user = [[User alloc] initWithDictionary:user];
+        
         self.usernameStr = self.user.name;
+        
         self.handleStr = self.user.handle;
         
         
@@ -67,7 +70,7 @@
     return self;
 }
 
-+ (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries{
++ (NSMutableArray *)tweetsWithArray:(NSMutableArray *)dictionaries{
     NSMutableArray *tweets = [NSMutableArray array];
     for (NSDictionary *dictionary in dictionaries) {
         Tweet *tweet = [[Tweet alloc] initWithDictionary:dictionary];

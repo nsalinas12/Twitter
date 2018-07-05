@@ -6,16 +6,20 @@
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
 
+#import "LoginViewController.h"
+#import "AppDelegate.h"
 #import "TimelineViewController.h"
 #import "APIManager.h"
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "Tweet.h"
 #import "User.h"
+#import "ComposeViewController.h"
 
-@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate >
+@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
 
-@property (strong, nonatomic) NSArray *tweetsArray;
+@property (nonatomic, strong ) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) NSMutableArray *tweetsArray;
 @property (weak, nonatomic) IBOutlet UITableView *tweetTimelineTableView;
 
 @end
@@ -24,26 +28,45 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.tweetTimelineTableView.dataSource = self;
     self.tweetTimelineTableView.delegate = self;
     
-    // Get timeline
-    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
+    [self fetchTweets];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    
+    [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
+    
+    [self.tweetTimelineTableView insertSubview:self.refreshControl atIndex:0];
+    
+}
+
+
+- (void) fetchTweets {
+        [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
         if (tweets) {
             NSLog(@"😎😎😎 Successfully loaded home timeline");
             
             self.tweetsArray = tweets;
             
             [self.tweetTimelineTableView reloadData];
+            [self.refreshControl endRefreshing];
+            
             
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
     }];
+}
+
+
+- (void) didTweet:(Tweet *)tweet{
     
+    [self.tweetsArray insertObject:tweet atIndex:0];
+    [self.tweetTimelineTableView reloadData];
     
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -67,17 +90,22 @@
     
 }
 
+- (IBAction)tapOnLogout:(id)sender {
+    
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    
+    [[APIManager shared] logout];
+}
 
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
-
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    UINavigationController *navigationController = [segue destinationViewController];
+    ComposeViewController *composeController = (ComposeViewController*) navigationController.topViewController;
+    composeController.delegate = self;
+}
 @end

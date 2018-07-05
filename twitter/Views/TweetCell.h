@@ -21,4 +21,6 @@
 @property (weak, nonatomic) Tweet *tweet;
 @property (weak, nonatomic) User *user;
 
+- (void) refreshData;
+
 @end
