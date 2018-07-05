@@ -13,8 +13,8 @@
 
 
 static NSString * const baseURLString = @"https://api.twitter.com";
-static NSString * const consumerKey = @"IrBgh2tGBpPyAVDUcfeC7ypsF"; // Enter your consumer key here
-static NSString * const consumerSecret = @"rYoIgL3dpfRfNyOCpbDXABcxVOMXKs4NSxLeAGxFP1UZS81wJv";// Enter your consumer secret here"
+static NSString * const consumerKey = @""; // Enter your consumer key here
+static NSString * const consumerSecret = @"";// Enter your consumer secret here"
 
 @interface APIManager()
 
