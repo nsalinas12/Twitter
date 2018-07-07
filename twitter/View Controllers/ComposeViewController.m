@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) IBOutlet UITextView *composeTextView;
 
+
 @end
 
 @implementation ComposeViewController
@@ -22,6 +23,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -43,6 +46,7 @@
      
     
 }
+
 
 
 - (IBAction)cancelButton:(id)sender {

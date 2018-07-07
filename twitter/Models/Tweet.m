@@ -30,7 +30,7 @@
         self.favorited = [dictionary[@"favorited"] boolValue];
         self.retweetCount = [dictionary[@"retweet_count"] intValue];
         self.retweeted = [dictionary[@"retweeted"] boolValue];
-        
+    
         
         
         NSString *basePorfileImageURL = dictionary[@"user"][@"profile_image_url_https"];

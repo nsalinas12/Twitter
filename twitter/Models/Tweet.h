@@ -27,6 +27,9 @@
 @property (strong, nonatomic) NSString *createdAtString; // Display date
 @property (nonatomic, strong) NSURL *profileImageUrl;
 
+@property (strong, nonatomic) NSString *dateLine;
+
+
 // For Retweets
 @property (strong, nonatomic) User *retweetedByUser;  // user who retweeted if tweet is retweet
 

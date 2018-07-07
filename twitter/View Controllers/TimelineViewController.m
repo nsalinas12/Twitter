@@ -15,8 +15,9 @@
 #import "Tweet.h"
 #import "User.h"
 #import "ComposeViewController.h"
+#import "TweetDetailsViewController.h"
 
-@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
+@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailsViewControllerDelegate>
 
 @property (nonatomic, strong ) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray *tweetsArray;
@@ -43,7 +44,7 @@
 
 
 - (void) fetchTweets {
-        [[APIManager shared] getHomeTimelineWithCompletion:^(NSMutableArray *tweets, NSError *error) {
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSMutableArray *tweets, NSError *error) {
         if (tweets) {
             NSLog(@"😎😎😎 Successfully loaded home timeline");
             
@@ -51,6 +52,7 @@
             
             [self.tweetTimelineTableView reloadData];
             [self.refreshControl endRefreshing];
+            
             
             
         } else {
@@ -67,6 +69,10 @@
     
 }
 
+- (void) didInteract: (TweetCell *) cell {
+        [cell refreshData];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -80,7 +86,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-  //  TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
+    //  TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell" forIndexPath:indexPath];
     
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     
@@ -102,10 +108,34 @@
 }
 
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*) navigationController.topViewController;
-    composeController.delegate = self;
+
+    
+    if( [segue.identifier isEqualToString:@"segueToComposeTweetViewController" ] ){
+        
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeController = (ComposeViewController*) navigationController.topViewController;
+        composeController.delegate = self;
+        
+        
+    } else if ( [segue.identifier isEqualToString:@"segueToTweetDetailsViewController" ] ){
+
+        UITableViewCell *tappedCell = sender;
+        NSIndexPath *indexPath = [self.tweetTimelineTableView indexPathForCell:tappedCell];
+        
+        Tweet *tweet = self.tweetsArray[indexPath.row];
+        
+        TweetDetailsViewController * tweetDetailViewController = [segue destinationViewController];
+        
+        tweetDetailViewController.tweet = tweet;
+        
+    }
 }
-@end
+    @end
