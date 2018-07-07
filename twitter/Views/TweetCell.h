@@ -22,6 +22,9 @@
 @property (weak, nonatomic) User *user;
 @property (weak, nonatomic) IBOutlet UILabel *datelineLabel;
 
+
+
+
 - (void) refreshData;
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;

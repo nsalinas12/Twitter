@@ -15,7 +15,6 @@
 @implementation TweetCell
 
 
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -48,15 +47,40 @@
         [self.profileImageView setImageWithURL:self.tweet.profileImageUrl];
     }
     self.profileImageView.layer.cornerRadius = 25;
+    [self refreshData];
     
 }
 
 - (void) refreshData {
     
+    
+    UIColor *mainColor = [UIColor colorWithRed:173/255.0
+                                         green:184/255.0
+                                          blue:194/255.0
+                                         alpha:1];
+    
     self.favoriteCountLabel.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
     self.retweetCountLabel.text = [NSString stringWithFormat:@"%d", self.tweet.retweetCount];
     self.retweetButton.selected = self.tweet.retweeted;
     self.likeButton.selected = self.tweet.favorited;
+    
+    if( self.retweetButton.selected == YES ){
+        
+        self.retweetCountLabel.textColor = UIColor.greenColor;
+        
+    } else {
+        
+        self.retweetCountLabel.textColor = mainColor;
+    }
+    
+    if( self.likeButton.selected == YES ){
+        
+        self.favoriteCountLabel.textColor = UIColor.redColor;
+        
+    } else {
+        
+        self.favoriteCountLabel.textColor = mainColor;
+    }
     
 }
 

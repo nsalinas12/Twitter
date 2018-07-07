@@ -47,6 +47,11 @@
 
 - (void) loadTweet{
     
+    UIColor *mainColor = [UIColor colorWithRed:173/255.0
+                                         green:184/255.0
+                                          blue:194/255.0
+                                         alpha:1];
+    
     self.profileImageView.image = nil;
     if (self.tweet.profileImageUrl != nil) {
         [self.profileImageView setImageWithURL:self.tweet.profileImageUrl];
@@ -63,6 +68,24 @@
     
     self.retweetButton.selected = self.tweet.retweeted;
     self.favoriteButton.selected = self.tweet.favorited;
+    
+    if( self.retweetButton.selected == YES ){
+        
+        self.retweetCountLabel.textColor = UIColor.greenColor;
+        
+    } else {
+        
+        self.retweetCountLabel.textColor = mainColor;
+    }
+    
+    if( self.favoriteButton.selected == YES ){
+        
+        self.favoriteCountLabel.textColor = UIColor.redColor;
+        
+    } else {
+        
+        self.favoriteCountLabel.textColor = mainColor;
+    }
     
     
 }
