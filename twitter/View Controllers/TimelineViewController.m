@@ -17,7 +17,7 @@
 #import "ComposeViewController.h"
 #import "TweetDetailsViewController.h"
 
-@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailsViewControllerDelegate>
+@interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate>
 
 @property (nonatomic, strong ) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray *tweetsArray;
@@ -40,6 +40,15 @@
     
     [self.tweetTimelineTableView insertSubview:self.refreshControl atIndex:0];
     
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+    
+    [self.tweetTimelineTableView reloadData];
+    
+
 }
 
 
@@ -69,9 +78,6 @@
     
 }
 
-- (void) didInteract: (TweetCell *) cell {
-        [cell refreshData];
-}
 
 
 - (void)didReceiveMemoryWarning {

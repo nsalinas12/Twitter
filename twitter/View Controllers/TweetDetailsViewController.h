@@ -11,17 +11,9 @@
 #import "TweetCell.h"
 #import "TimelineViewController.h"
 
-@class TweetCell;
-
-@protocol TweetDetailsViewControllerDelegate
-
-- (void) didInteract: (TweetCell*) cell;
-
-@end
 
 @interface TweetDetailsViewController : UIViewController
 
-@property (nonatomic, weak) id<TweetDetailsViewControllerDelegate> delegate;
 
 @property (weak, nonatomic) Tweet *tweet;
 
